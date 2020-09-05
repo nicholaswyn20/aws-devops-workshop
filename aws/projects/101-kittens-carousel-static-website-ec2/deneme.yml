@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  FdnCfiInstance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      
+      ImageId: "ami-0c94855ba95c71c99"
+      #InstanceInitiatedShutdownBehavior: "Stop"
+      InstanceType: "t2.micro"
+      
+      KeyName: "anahtar"
+      
+      SecurityGroups:
+        - first_sec_group
+      
+      Tags:
+        - Key : Name
+          Value : juliet2 
+      
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash
+            yum update -y
+            amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+            yum install -y httpd mariadb-server
+            systemctl start httpd
+            systemctl enable httpd
+            usermod -a -G apache ec2-user
+            chown -R ec2-user:apache /var/www
+            chmod 2775 /var/www
+            find /var/www -type d -exec chmod 2775 {} \;
+            find /var/www -type f -exec chmod 0664 {} \;
+            echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+
+      
