@@ -9,29 +9,35 @@ Resources:
       #InstanceInitiatedShutdownBehavior: "Stop"
       InstanceType: "t2.micro"
       
-      KeyName: "anahtar"
+      KeyName: "windowsKey"
       
       SecurityGroups:
         - first_sec_group
       
       Tags:
         - Key : Name
-          Value : juliet2 
+          Value : juliet6
+          
       
       UserData:
         Fn::Base64:
-          !Sub |
-            #!/bin/bash
+          !Sub |           
+            
+
+            #!/bin/bash -xe
             yum update -y
-            amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
-            yum install -y httpd mariadb-server
-            systemctl start httpd
-            systemctl enable httpd
+            yum install -y httpd.x86_64
+            systemctl start httpd.service
+            systemctl enable httpd.service
             usermod -a -G apache ec2-user
             chown -R ec2-user:apache /var/www
-            chmod 2775 /var/www
-            find /var/www -type d -exec chmod 2775 {} \;
-            find /var/www -type f -exec chmod 0664 {} \;
-            echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+            chmod -R 777 /var/www/html
+            cd /var/www/html/
+            
+            wget https://github.com/nicholaswyn20/aws-myCV-Repo/raw/master/aws/projects/101-kittens-carousel-static-website-ec2/static-web/cat3.jpg
+            wget https://github.com/nicholaswyn20/aws-myCV-Repo/raw/master/aws/projects/101-kittens-carousel-static-website-ec2/static-web/cat1.jpg
+            wget https://github.com/nicholaswyn20/aws-myCV-Repo/raw/master/aws/projects/101-kittens-carousel-static-website-ec2/static-web/cat2.jpg
+            wget https://raw.githubusercontent.com/nicholaswyn20/aws-myCV-Repo/master/aws/projects/101-kittens-carousel-static-website-ec2/static-web/index.html
+            systemctl restart httpd
 
       
