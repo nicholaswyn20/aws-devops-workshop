@@ -95,7 +95,7 @@ The server responds to that request with an HTTP response message. Within the re
 # Create a function named greet which return formatted inline html string 
 # and assign to the dynamic route of ('/<name>')
 
-# Create a function named greet_admin which redirect the request to the hello path with parameter of 'Master Admin!!!!' 
+# Create a function named greet_admin which redirect the request to the hello path with param of 'Master Admin!!!!' 
 # and assign to the route of ('/greet-admin')
 
 # Rewrite a function named greet which which uses template file named `greet.html` under `templates` folder 
